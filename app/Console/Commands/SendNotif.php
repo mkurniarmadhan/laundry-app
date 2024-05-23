@@ -32,6 +32,8 @@ class SendNotif extends Command
         foreach ($pelanggan as $val) :
             if ($val->waktu_ambil < Carbon::now()) {
                 $curl = curl_init();
+                $layanan = $val->layanan->nama_layanan;
+                $totalBayar = number_format($val->total_bayar);
                 curl_setopt_array($curl, array(
                     CURLOPT_URL => 'https://api.fonnte.com/send',
                     CURLOPT_RETURNTRANSFER => true,
@@ -42,8 +44,31 @@ class SendNotif extends Command
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST => 'POST',
                     CURLOPT_POSTFIELDS => array(
-                        'target' => $val->no_hp,
-                        'message' => "HALLO $val->nama_pelanggan, LAUNDY KAMU UDAH SIAP NIH.\nBERIKUT RINCIAN LAUNDRY ANDA:\n\nhari tanggal : $val->created_at\nBerat        :  $val->berat_cucian\ntotal bayar  : $val->total_bayar  ",
+                        'target' => '089694273720',
+                        'message' => "
+*Invoice Laundry Rizal*
+
+Kepada Yth. $val->nama_pelanggan
+
+*Tanggal Masuk :*
+$val->created_at
+
+*Berat :*
+$val->berat_cucian Kg
+
+*Total Bayar:* 
+Rp. $totalBayar
+
+*Detail Layanan:*
+$layanan
+
+*Catatan:*
+
+Notifikasi ini dikirim otomatis dari Rizal Laundry.
+
+Terima kasih atas kepercayaan Anda kepada Rizal Laundry!
+
+---",
                         'typing' => false,
                         'countryCode' => '62',
                     ),

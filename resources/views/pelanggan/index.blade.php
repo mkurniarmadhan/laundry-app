@@ -18,26 +18,23 @@
                 <table class="table table-striped table-hover" id="myTable">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Nama Pelanggan</th>
-                            {{-- <th>Status Bayar</th> --}}
-                            <th>Layanan </th>
                             <th>Tanggal Masuk </th>
+                            <th>Nama Pelanggan</th>
+                            <th>Layanan </th>
+                            <th>Status Notifikasi </th>
                             <th>Opsi</th>
-                            <th>Status Ambil</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($pelanggan as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
-
+                                <td>{{ Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y h:m') }}</td>
                                 <td> {{ $item->nama_pelanggan }}</td>
-                                {{-- <td>{{ $item->status_bayar != false ? 'Sudah Bayar' : 'Belum Bayar' }} </td> --}}
                                 <td><span class="status text-success"></span> {{ $item->layanan->nama_layanan }}</td>
 
                                 <td>
-                                    <?php echo $item->waktu_ambil < \Carbon\Carbon::now() ? '<span class="status text-success">&bull;</span>BISA DIAMBIL' : '<span class="status text-danger">&bull;</span>BELUM BISA DI AMBIL'; ?>
+                                    <?php echo $item->waktu_ambil < \Carbon\Carbon::now() ? '<span class="status text-success">&bull;</span>Terkirim ' : '<span class="status text-danger">&bull;</span>Belum Terkirim'; ?>
 
                                 </td>
 
@@ -54,7 +51,7 @@
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col" colspan="4">#nomornotas : </th>
+                                                            <th scope="col" colspan="4">Detail Pelanggan </th>
 
                                                         </tr>
                                                     </thead>
@@ -66,23 +63,67 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Layanan</td>
-                                                            <td colspan="3">{{ $item->nama_pelanggan }}</td>
+                                                            <td colspan="3">{{ $item->layanan->nama_layanan }}</td>
 
 
 
                                                         </tr>
                                                         <tr>
                                                             <td>Total Biaya</td>
-                                                            <td>{{ $item->nama_pelanggan }}</td>
-                                                            <td>Belum bayar</td>
+                                                            <td>{{ number_format($item->total_bayar) }}</td>
 
                                                         </tr>
                                                         <tr>
-                                                            <td>Tanggal Ambil </td>
-                                                            <td>{{ $item->nama_pelanggan }}</td>
-                                                            <td>Belum ambil</td>
+                                                            <td>Status Bayar </td>
+
+                                                            <td> {{ $item->status_bayar ? 'sudah bayar' : 'belum bayar' }}
+                                                            </td>
+                                                            <td class="d-flex p-2">
+
+                                                                @if (!$item->status_bayar)
+                                                                    <form action="{{ route('pelanggan.confirmBayar') }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id_pelanggan"
+                                                                            value="{{ $item->id }}">
+                                                                        <button class="btn btn-sm btn-danger"
+                                                                            id="ambil_barang">Update Status
+                                                                            bayar</button>
+                                                                    </form>
+                                                                @else
+                                                                    <button class="btn btn-sm btn-success"><i
+                                                                            class="material-icons">&#xe5ca;</i></button>
+                                                                @endif
+
+                                                            </td>
 
                                                         </tr>
+                                                        <tr>
+                                                            <td>Status Ambil </td>
+                                                            <td>
+                                                                {{ $item->status_ambil ? 'sudah diambil' : 'belum diambil' }}
+                                                            </td>
+
+                                                            <td class="d-flex p-2">
+
+                                                                @if (!$item->status_ambil)
+                                                                    <form action="{{ route('pelanggan.confirm') }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id_pelanggan"
+                                                                            value="{{ $item->id }}">
+                                                                        <button class="btn btn-sm btn-danger"
+                                                                            id="ambil_barang">Konfimasi
+                                                                            Pengambilan</button>
+                                                                    </form>
+                                                                @else
+                                                                    <button class="btn btn-sm btn-success"><i
+                                                                            class="material-icons">&#xe5ca;</i></button>
+                                                                @endif
+
+                                                            </td>
+                                                        </tr>
+
 
                                                     </tbody>
                                                 </table>
@@ -93,21 +134,7 @@
 
 
 
-                                <td class="d-flex p-2">
 
-                                    @if (!$item->status_ambil)
-                                        <form action="{{ route('pelanggan.confirm') }}" method="post">
-                                            @csrf
-                                            <input type="hidden" name="id_pelanggan" value="{{ $item->id }}">
-                                            <button class="btn btn-sm btn-danger" id="ambil_barang"><i
-                                                    class="material-icons">&#xe5cd;</i></button>
-                                        </form>
-                                    @else
-                                        <button class="btn btn-sm btn-success"><i
-                                                class="material-icons">&#xe5ca;</i></button>
-                                    @endif
-
-                                </td>
                             </tr>
                         @endforeach
 

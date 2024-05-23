@@ -13,6 +13,7 @@ class PelangganController extends Controller
 {
     public function index()
     {
+
         $jam_24 = [1, 4, 7];
         $jam_6 = [2, 8, 5];
         $jam_3 = [3, 6, 9];
@@ -86,6 +87,17 @@ class PelangganController extends Controller
         $pelanggan = Pelanggan::find($request->id_pelanggan);
 
         $pelanggan->status_ambil = 1;
+
+        $pelanggan->save();
+
+        return back();
+    }
+    public function confirmBayar(Request $request)
+    {
+
+        $pelanggan = Pelanggan::find($request->id_pelanggan);
+
+        $pelanggan->status_bayar = 1;
 
         $pelanggan->save();
 

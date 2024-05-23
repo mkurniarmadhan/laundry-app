@@ -25,5 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::get('pelanggan', [PelangganController::class, 'index'])->name('pelanggan');
     Route::post('pelanggan', [PelangganController::class, 'create'])->name('pelanggan.create');
     Route::post('confirm', [PelangganController::class, 'confirm'])->name('pelanggan.confirm');
+    Route::post('confirmBayar', [PelangganController::class, 'confirmBayar'])->name('pelanggan.confirmBayar');
     Route::get('auth', [AuthController::class, 'logout'])->name('auth.logout');
 });
