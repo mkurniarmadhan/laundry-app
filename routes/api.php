@@ -25,5 +25,6 @@ Route::get('layanan/{id}', function (string $id) {
     $harga = str($data->harga_layanan)->remove(',');
     return response()->json([
         'data' => $harga,
+        'waktu' => $data->waktu,
     ]);
 });

@@ -44,7 +44,7 @@ class SendNotif extends Command
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST => 'POST',
                     CURLOPT_POSTFIELDS => array(
-                        'target' => '089694273720',
+                        'target' => $pelanggan->no_hp,
                         'message' => "
 *Invoice Laundry Rizal*
 
@@ -73,7 +73,7 @@ Terima kasih atas kepercayaan Anda kepada Rizal Laundry!
                         'countryCode' => '62',
                     ),
                     CURLOPT_HTTPHEADER => array(
-                        'Authorization: g8BBQ_nJCW@Ch_v4Earo'
+                        'Authorization: @YbJ9!TRchtqpT3yxxfm'
                     ),
                 ));
                 $response = curl_exec($curl);

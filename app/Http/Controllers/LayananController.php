@@ -27,6 +27,7 @@ class LayananController extends Controller
         $layanan->nama_layanan = $request->nama_layanan;
         $layanan->harga_layanan = $request->harga_layanan;
         $layanan->deskripsi = $request->deskripsi;
+        $layanan->waktu = $request->waktu;
         $layanan->save();
 
         return back();
@@ -41,6 +42,7 @@ class LayananController extends Controller
         $layanan->nama_layanan = $request->nama_layanan;
         $layanan->harga_layanan = $request->harga_layanan;
         $layanan->deskripsi = $request->deskripsi;
+        $layanan->waktu = $request->waktu;
 
         $layanan->save();
 

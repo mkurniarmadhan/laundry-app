@@ -14,9 +14,7 @@ class PelangganController extends Controller
     public function index()
     {
 
-        $jam_24 = [1, 4, 7];
-        $jam_6 = [2, 8, 5];
-        $jam_3 = [3, 6, 9];
+
         $pelanggan = Pelanggan::all()->sortBy(['layanan_id', 'asc']);
 
         $layanan = Layanan::all();
@@ -35,16 +33,9 @@ class PelangganController extends Controller
         if ($request->bayar == 'Bayar Sekarang') {
             $pelanggan->status_bayar = 1;
         };
-        if (in_array($request->layanan_id, [3, 6, 9])) {
-            $pelanggan->waktu_ambil = Carbon::now()->addHour(3);
-        };
-        if (in_array($request->layanan_id, [2, 8, 5])) {
-            $pelanggan->waktu_ambil = Carbon::now()->addHour(6);
-        };
-        if (in_array($request->layanan_id, [1, 4, 7])) {
-            $pelanggan->waktu_ambil = Carbon::now()->addHour(24);
-        };
 
+
+        $pelanggan->waktu_ambil = Carbon::now()->addHour($request->waktu);
 
         $pelanggan->layanan_id = $request->layanan_id;
         $pelanggan->nama_pelanggan = $request->nama_pelanggan;
@@ -70,7 +61,7 @@ class PelangganController extends Controller
                 'countryCode' => '62',
             ),
             CURLOPT_HTTPHEADER => array(
-                'Authorization: g8BBQ_nJCW@Ch_v4Earo'
+                'Authorization: @YbJ9!TRchtqpT3yxxfm'
             ),
         ));
         $response = curl_exec($curl);
@@ -85,13 +76,69 @@ class PelangganController extends Controller
     {
 
         $pelanggan = Pelanggan::find($request->id_pelanggan);
-
         $pelanggan->status_ambil = 1;
+        $pelanggan->waktu_ambil = \Carbon\Carbon::now()->subDay(1);
 
         $pelanggan->save();
 
+
+        $layanan = $pelanggan->layanan->nama_layanan;
+        $totalBayar = number_format($pelanggan->total_bayar);
+
+
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+                'target' => $pelanggan->no_hp,
+                'message' => "
+            
+*Invoice Laundry Rizal*
+
+Kepada Yth. $pelanggan->nama_pelanggan
+
+*Tanggal Masuk :*
+$pelanggan->created_at
+
+*Berat :*
+$pelanggan->berat_cucian Kg
+
+*Total Bayar:* 
+Rp. $totalBayar
+
+*Detail Layanan:*
+$layanan
+
+*Catatan:*
+
+Notifikasi ini dikirim otomatis dari Rizal Laundry.
+
+Terima kasih atas kepercayaan Anda kepada Rizal Laundry!
+
+---
+                ",
+                'countryCode' => '62',
+            ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: @YbJ9!TRchtqpT3yxxfm'
+            ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+
         return back();
     }
+
+
     public function confirmBayar(Request $request)
     {
 

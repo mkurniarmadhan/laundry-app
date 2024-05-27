@@ -14,6 +14,8 @@ class Layanan extends Model
         'nama_layanan',
         'harga_layanan',
         'deskripsi',
+        'waktu'
+
     ];
 
     public function pelanggan()

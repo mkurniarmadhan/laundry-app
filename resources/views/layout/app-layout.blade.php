@@ -243,12 +243,14 @@
                     type: "GET",
                     success: function(response) {
                         const harga = response.data;
+                        const waktu = response.waktu;
                         var berat_cucian = $("#berat_cucian").val();
                         total_bayar = berat_cucian * harga;
                         let rupiahFormat = total_bayar.toString().replace(
                             /\B(?=(\d{3})+(?!\d))/g, '.');
                         $("#total_bayar").text(`RP. ${rupiahFormat}`)
                         $("input[name='total_bayar']").val(total_bayar)
+                        $("input[name='waktu']").val(waktu)
                     }
                 });
             });

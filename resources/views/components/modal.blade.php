@@ -36,7 +36,9 @@
                                 <select id="layanan_id" name="layanan_id" class="form-control">
                                     <option value="">Pilih Layanan...</option>
                                     @foreach ($layanan as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_layanan }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->nama_layanan }} -{{ $item->waktu }}
+                                            Jam
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -48,6 +50,7 @@
                             <div class="form-group col-md-6">
                                 <h3 id="total_bayar"></h3>
                                 <input type="hidden" name="total_bayar">
+                                <input type="hidden" name="waktu">
                             </div>
 
                         </div>
@@ -93,6 +96,11 @@
                             <label for="harga">deskripsi Layanan</label>
                             <input type="texr" class="form-control" id="deskripsi" name="deskripsi"
                                 placeholder="masukan deskripsi layanan">
+                        </div>
+                        <div class="form-group">
+                            <label for="waktu">waktu Layanan (jam)</label>
+                            <input type="number" class="form-control" id="waktu" name="waktu"
+                                placeholder="masukan lama waktu layanan">
                         </div>
 
 

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('nama_layanan');
             $table->double('harga_layanan');
             $table->text('deskripsi');
+            $table->integer('waktu');
             $table->timestamps();
         });
     }

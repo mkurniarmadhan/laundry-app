@@ -83,6 +83,12 @@
                                                         name="deskripsi" placeholder="masukan deskripsi layanan"
                                                         value="{{ $item->deskripsi }}">
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="waktu">Waktu Layanan</label>
+                                                    <input type="number" class="form-control" id="deskripsi"
+                                                        name="waktu" placeholder="masukan deskripsi layanan"
+                                                        value="{{ $item->waktu }}">
+                                                </div>
 
 
                                             </div>

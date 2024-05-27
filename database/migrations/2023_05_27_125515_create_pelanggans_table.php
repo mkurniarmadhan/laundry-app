@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_pelanggan');
             $table->double('berat_cucian');
             $table->double('total_bayar');
-            $table->string('no_hp')->default('089694273720');
+            $table->string('no_hp')->default('085706581330');
             $table->boolean('status_bayar')->default(false);
             $table->boolean('status_ambil')->default(false);
             $table->timestamp('waktu_ambil');

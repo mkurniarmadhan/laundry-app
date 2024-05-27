@@ -31,18 +31,21 @@ class DatabaseSeeder extends Seeder
                 [
                     'nama_layanan' => 'Cuci Kering Setrika - 24 Jam',
                     'harga_layanan' => 6000,
-                    'deskripsi' => '24 Jam '
+                    'deskripsi' => '24 Jam ',
+                    'waktu' => 24
                 ],
 
                 [
                     'nama_layanan' => 'Cuci Kering Setrika - 6 Jam',
                     'harga_layanan' => 7500,
-                    'deskripsi' => '6 Jam '
+                    'deskripsi' => '6 Jam ',
+                    'waktu' => 6
                 ],
                 [
                     'nama_layanan' => 'Cuci Kering Setrika - 3 Jam',
                     'harga_layanan' => 10000,
-                    'deskripsi' => '3 Jam '
+                    'deskripsi' => '3 Jam ',
+                    'waktu' => 3
                 ],
 
                 // [
