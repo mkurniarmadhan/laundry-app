@@ -15,6 +15,7 @@ class PelangganController extends Controller
     {
 
 
+
         $pelanggan = Pelanggan::all()->sortBy(['layanan_id', 'asc']);
 
         $layanan = Layanan::all();
@@ -25,7 +26,8 @@ class PelangganController extends Controller
     public function create(Request $request)
     {
 
-        $carbon = Carbon::now();
+        $carbon = Carbon::now()->isoFormat('dddd, D MMMM Y h:mm');
+        $waktu_ambil = Carbon::now()->addHour($request->waktu)->isoFormat('dddd, D MMMM Y h:mm');
 
         $total_bayar =     number_format($request->total_bayar);
         $pelanggan = new Pelanggan();
@@ -57,7 +59,7 @@ class PelangganController extends Controller
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => array(
                 'target' => $request->no_hp,
-                'message' => "HALLO $request->nama_pelanggan, TERIMA KASIH TELAH MENGGUNAKAN JASA LAUNDRY DARI KAMI.\nBERIKUT RINCIAN LAUNDRY ANDA:\n\nhari tanggal : $carbon\nNama        :  $request->nama_pelanggan\nBerat        :  $request->berat_cucian KG\ntotal bayar  : Rp. $total_bayar  ",
+                'message' => "HALLO $request->nama_pelanggan, TERIMA KASIH TELAH MENGGUNAKAN JASA LAUNDRY DARI KAMI.\nBERIKUT RINCIAN LAUNDRY ANDA:\n Tanggal Masuk : $carbon\n Tanggal ambil : $waktu_ambil\nNama        :  $request->nama_pelanggan\nBerat        :  $request->berat_cucian KG\ntotal bayar  : Rp. $total_bayar  ",
                 'countryCode' => '62',
             ),
             CURLOPT_HTTPHEADER => array(
@@ -85,6 +87,10 @@ class PelangganController extends Controller
         $layanan = $pelanggan->layanan->nama_layanan;
         $totalBayar = number_format($pelanggan->total_bayar);
 
+        $tanggal_masuk = Carbon::parse($pelanggan->created_at)->isoFormat('dddd, D MMMM Y h:mm');
+
+        $tanggal_ambil =  Carbon::parse($pelanggan->waktu_ambil)->isoFormat('dddd, D MMMM Y h:mm');
+
 
 
         $curl = curl_init();
@@ -106,7 +112,10 @@ class PelangganController extends Controller
 Kepada Yth. $pelanggan->nama_pelanggan
 
 *Tanggal Masuk :*
-$pelanggan->created_at
+$tanggal_masuk
+
+*Tanggal Ambil :*
+$tanggal_ambil
 
 *Berat :*
 $pelanggan->berat_cucian Kg
